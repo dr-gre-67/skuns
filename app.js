@@ -335,7 +335,7 @@ function setPlayIcon() {
 }
 
 // ===== SoundCloud Widget: реальный звук =====
-let scw = null, scPoll = null;
+let scw = null, scPoll = null, scStarted = false;
 
 function widgetUrl(scid, ap) {
   return 'https://w.soundcloud.com/player/?url=' + encodeURIComponent('https://api.soundcloud.com/tracks/' + scid) +
@@ -352,6 +352,7 @@ function widget() {
     return null;
   }
   scw.bind(SC.Widget.Events.PLAY, () => {
+    scStarted = true;
     playing = true;
     document.body.dataset.audio = 'playing';
     $('#wave').classList.add('live');
@@ -404,8 +405,10 @@ function playTrack(id, q) {
     return;
   }
   playing = true;
+  scStarted = false;
   document.body.dataset.audio = 'playing';
   setPlayIcon();
+  $('#sc-strip').hidden = false;
   $('#sc-frame').src = widgetUrl(t.scid, true);
   const w = widget();
   if (!w) {
@@ -419,7 +422,7 @@ function togglePlay() {
   if (!cur.scid) { toast('демо-заливка: звука пока нет'); return; }
   const w = widget();
   if (!w) { toast('нет связи с soundcloud — проверь впн'); return; }
-  if (playing) w.pause();
+  if (scStarted && playing) w.pause();
   else w.play();
 }
 
