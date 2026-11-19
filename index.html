@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>СКУНС£ — подвал русской сцены</title>
+<meta name="theme-color" content="#050308">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23050308'/%3E%3Ctext x='32' y='45' font-size='38' text-anchor='middle' fill='%23ff2d78' font-family='sans-serif' font-weight='bold'%3E%C2%A3%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Rubik:wght@400;500;600;700&family=Unbounded:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="grain"></div>
+<div class="crt"></div>
+
+<div class="app">
+  <header class="topbar">
+    <div class="logo" data-t="СКУНС£">СКУНС£</div>
+    <div class="clock" id="clock">--:--</div>
+  </header>
+
+  <main id="main">
+    <section class="screen active" id="screen-home">
+      <div id="home-body"></div>
+    </section>
+
+    <section class="screen" id="screen-discover">
+      <div id="disc-top"></div>
+      <div id="disc-results"></div>
+    </section>
+
+    <section class="screen" id="screen-upload">
+      <h1 class="page-t ht">загрузить в подвал</h1>
+      <p class="page-sub">без модерации и без шильдиков. залил — и он уже в ленте</p>
+      <form id="upform" novalidate>
+        <div class="drop" id="drop">
+          <input type="file" id="f-cover" accept="image/*" hidden>
+          <div class="drop-ph" id="drop-ph">
+            <span class="drop-sym">✧</span>
+            <span>обложка — перетащи сюда или кликни</span>
+            <small>если не загрузишь — соберём квадрат из неона сами</small>
+          </div>
+          <img id="cover-prev" alt="" hidden>
+        </div>
+
+        <label class="fld">
+          <span>название трека *</span>
+          <input id="f-title" type="text" maxlength="80" placeholder="например: «чекни вайб»" required>
+        </label>
+
+        <label class="fld">
+          <span>кто сделал *</span>
+          <input id="f-artist" type="text" maxlength="40" placeholder="твой тег" required>
+        </label>
+
+        <div class="fld-row">
+          <label class="fld">
+            <span>жанр *</span>
+            <select id="f-genre" required>
+              <option value="" disabled selected>выбери жанр…</option>
+            </select>
+          </label>
+          <label class="fld">
+            <span>город</span>
+            <input id="f-city" type="text" maxlength="24" list="city-list" placeholder="панелька">
+            <datalist id="city-list"></datalist>
+          </label>
+        </div>
+
+        <label class="fld">
+          <span>теги</span>
+          <input id="f-tags" type="text" maxlength="60" placeholder="челка, 3am, jerk через запятую">
+        </label>
+
+        <button class="btn primary big" type="submit">выпустить в подвал</button>
+        <p class="fineprint">ничего никуда не отправляется: демо живёт прямо в браузере</p>
+      </form>
+    </section>
+
+    <section class="screen" id="screen-profile">
+      <div id="profile-body"></div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="miniplayer" id="mini" hidden>
+    <div class="mp-cover" id="mp-cover"></div>
+    <div class="mp-mid">
+      <div class="mp-row1">
+        <span class="mp-title ht" id="mp-title"></span>
+        <span class="mp-time" id="mp-time">0:00</span>
+      </div>
+      <div class="wave" id="wave" title="перемотка"></div>
+    </div>
+    <button class="mp-btn" id="mp-prev" aria-label="предыдущий">
+      <svg viewBox="0 0 24 24"><path d="M7 6h2v12H7zM20 6v12l-9-6z"/></svg>
+    </button>
+    <button class="mp-btn mp-play" id="mp-play" aria-label="плей/пауза">
+      <svg viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z"/></svg>
+    </button>
+    <button class="mp-btn" id="mp-next" aria-label="следующий">
+      <svg viewBox="0 0 24 24"><path d="M15 6h2v12h-2zM4 6v12l9-6z"/></svg>
+    </button>
+  </div>
+
+  <nav class="tabbar">
+    <button class="tab active" data-nav="home">
+      <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9h-5v-6h-8v6H3z"/></svg>
+      <span>Главная</span>
+    </button>
+    <button class="tab" data-nav="discover">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5L13 13l-4.5 2.5L11 11z"/></svg>
+      <span>Discover</span>
+    </button>
+    <button class="tab tab-up" data-nav="upload">
+      <span class="ic-up"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span>
+      <span>Upload</span>
+    </button>
+    <button class="tab" data-nav="profile">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.6-4 4.8-6 8-6s6.4 2 8 6"/></svg>
+      <span>Профиль</span>
+    </button>
+  </nav>
+</div>
+
+<iframe id="sc-frame" allow="autoplay" hidden></iframe>
+<script src="sc-api.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
