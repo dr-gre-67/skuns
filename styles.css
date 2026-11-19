@@ -868,6 +868,22 @@ form#upform{padding:0 18px; display:flex; flex-direction:column; gap:14px}
 
 .toast.show{opacity:1; transform:translate(-50%, 0)}
 
+.sc-strip{
+  flex-shrink:0;
+  display:none;
+  background:rgba(8,5,14,.94);
+  border-top:1px solid var(--line);
+  padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+}
+
+.sc-strip[hidden]{display:none}
+
+#sc-frame{width:100%; height:166px; border:0; display:block}
+
+@media (max-width:720px){
+  .sc-strip{display:block}
+}
+
 @media (max-width:390px){
   .tcard{flex-basis:136px}
   .tcard .cover{width:136px; height:136px}
